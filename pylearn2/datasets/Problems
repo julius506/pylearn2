@@ -1,0 +1,37 @@
+Problemas
+
+PYTHONPATH doesn't work. On the server or on my machine
+
+
+
+
+SAheart.yaml
+TypeError: Cannot safely cast batch dtype float64 to space's dtype int64. 
+
+I got this error when changing to using the file csv_dataset.py to do conversions
+
+
+
+
+
+higgs.yaml
+
+ValueError: VectorSpace(dim=1, dtype=float64) with total dimension 1 can't format a batch into VectorSpace(dim=2, dtype=float64)because its total dimension is 2
+
+This happens when I set the softmax number of classes to 2. If I leave it 1 it runs but the cost function is (obviously) zero always.
+
+
+
+wine.yaml (tutorial)
+takes a loooooooooong time to finish (it is deep)
+But it works and improves the target a lot.
+
+
+
+arcus-1
+
+ImportError: No module named pylearn2.utils
+
+I suspect this is because I can't run setup.py. Should I just clone my installed version?
+
+
