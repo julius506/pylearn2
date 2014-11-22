@@ -2,7 +2,7 @@ Problemas
 
 PYTHONPATH doesn't work. On the server or on my machine
 
-
+Preguntar si mi idea de lo que esta pasando en el modelo es correcta. Es el numero de layers y ubicacion los que creo que son?
 
 
 SAheart.yaml
@@ -23,15 +23,13 @@ This happens when I set the softmax number of classes to 2. If I leave it 1 it r
 
 
 wine.yaml (tutorial)
-takes a loooooooooong time to finish (it is deep)
-But it works and improves the target a lot.
+
 
 
 
 arcus-1
-
-ImportError: No module named pylearn2.utils
-
-I suspect this is because I can't run setup.py. Should I just clone my installed version?
+Problems pushing to github
+How do I copy something from server to my machine? (ademas de por medio de github)
+how can I visualize plots from plot_monitor.py in my machine if the file is in the server?
 
 
