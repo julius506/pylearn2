@@ -1,0 +1,72 @@
+---
+title: "Concrete"
+author: "Julian Collado"
+date: "11/24/2014"
+output: html_document
+---
+
+```{r}
+# Residual Sum of Square (RSS)
+RSS <- function(Pred, Real) {
+    ss <- sum((Real - Pred)^2)
+    return(ss)
+}
+
+# Residual Standard Error (RSE) NumPred es el número total de predictores
+# por eso se resta 1 (que es realidad sumar 1)
+RSE <- function(Pred, Real, NumPred) {
+    N <- length(Real) - NumPred - 1  # <- length(Real)-(NumPred+1)
+    ss <- sqrt((1/N) * RSS(Pred, Real))
+    return(ss)
+}
+
+# Mean Squared Error
+MSE <- function(Pred, Real) {
+    N <- length(Real)
+    ss <- (1/N) * RSS(Pred, Real)
+    return(ss)
+}
+
+# Error Relativo
+ErrorRelativo <- function(Pred, Real) {
+    ss <- sum(abs(Real - Pred))/sum(abs(Real))
+    return(ss)
+}
+```
+
+
+```{r load_dataset}
+#Se cargan los datos
+fileName = "Concrete_DataS"
+fileName.csv = paste(fileName,".csv", sep="")
+DATOS<-read.csv( paste(fileName.csv) ,header=T,dec=".",sep=";")
+```
+
+```{r}
+
+# Se subdividen los datos
+tamano <- dim(DATOS)[1]
+tercio <- round(tamano/3, digits = 0)
+
+# Se subdividen los datos
+muestra <- sample(1:tamano, tercio)
+ttesting <- DATOS[muestra, ]
+xttesting <- ttesting[, -1]
+taprendizaje <- DATOS[-muestra, ]
+```
+
+
+```{r}
+modelo <- lm(Concrete.compressive.strength.MPa..megapascals. ~ ., data = taprendizaje)
+
+# Se hacen predicciones de tabla del testing
+prediccion <- predict(object = modelo, xttesting)
+valoresReales <- ttesting$Concrete.compressive.strength.MPa..megapascals.
+
+# Se calcula Error estandar de residuos
+numeroPredictores <- length(modelo$coefficients) - 1  #Se resta uno para eliminar beta cero
+RSE(prediccion, valoresReales, numeroPredictores)
+MSE(prediccion, valoresReales)
+ErrorRelativo(prediccion, valoresReales)
+```
+
