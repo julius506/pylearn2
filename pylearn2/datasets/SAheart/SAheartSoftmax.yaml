@@ -1,0 +1,61 @@
+!obj:pylearn2.train.Train {
+    dataset: &train !obj:csv_dataset.CSVDataset {
+        start: 0,
+        stop: 340,
+        path: 'SAheartS.csv',
+        task: 'classification',
+        expect_labels : True,
+        expect_headers : True,
+        delimiter : ','
+    },
+    model: !obj:pylearn2.models.softmax_regression.SoftmaxRegression {
+        n_classes: 10,
+        irange: 0.,
+        nvis: 9,
+    },
+    algorithm: !obj:pylearn2.training_algorithms.sgd.SGD {
+        learning_rate: 0.001,
+        batch_size: 10,
+        monitoring_dataset:
+# Dataset or dictionary
+            {
+                'train' : *train,
+                'valid' : !obj:csv_dataset.CSVDataset {
+                            start: 341,
+                            stop: 400,
+                            path: 'SAheartS.csv',
+                            task: 'classification',
+                            expect_labels : True,
+                            expect_headers : True,
+                            delimiter : ','
+                          },
+                'test'  : !obj:csv_dataset.CSVDataset {
+                            start: 400,
+                            stop: 462,
+                            path: 'SAheartS.csv',
+                            task: 'classification',
+                            expect_labels : True,
+                            expect_headers : True,
+                            delimiter : ','
+                          }
+            },
+        termination_criterion: !obj:pylearn2.termination_criteria.And {
+            criteria: [
+                !obj:pylearn2.termination_criteria.MonitorBased {
+                    channel_name: "valid_y_misclass"
+                },
+                !obj:pylearn2.termination_criteria.EpochCounter {
+                    max_epochs: 100
+                }
+            ]
+        }
+    },
+    extensions: [
+        !obj:pylearn2.train_extensions.best_params.MonitorBasedSaveBest {
+#             channel_name: 'valid_y_mse' # used only for LinearGaussianClass
+             channel_name: 'valid_y_misclass',
+             save_path: "${PYLEARN2_TRAIN_FILE_FULL_STEM}_best.pkl"
+        },
+    ],
+    save_freq: 1
+}
