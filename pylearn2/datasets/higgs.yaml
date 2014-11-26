@@ -1,13 +1,18 @@
 !obj:pylearn2.train.Train {
     dataset: &train !obj:higgs.load_data {
         start: 0,
-        stop: 4000
+        stop: 40000
     },
     model: !obj:pylearn2.models.mlp.MLP {
         layers: [
                  !obj:pylearn2.models.mlp.Sigmoid {
                      layer_name: 'h0',
-                     dim: 50,
+                     dim: 500,
+                     sparse_init: 15,
+                 },
+                 !obj:pylearn2.models.mlp.Sigmoid {
+                     layer_name: 'h1',
+                     dim: 500,
                      sparse_init: 15,
                  },
                  !obj:pylearn2.models.mlp.Softmax {
@@ -20,17 +25,17 @@
     },
     algorithm: !obj:pylearn2.training_algorithms.sgd.SGD {
         learning_rate: 0.01,
-        batch_size: 10,
+        batch_size: 50,
         monitoring_dataset:
             {
                 'train' : *train,
                 'valid' : !obj:higgs.load_data {
-                            start: 4001,
-                            stop: 4500
+                            start: 40001,
+                            stop: 45000
                 },
                 'test'  : !obj:higgs.load_data {
-                            start: 4501,
-                            stop: 5000
+                            start: 45001,
+                            stop: 50000
                           }
             },
         termination_criterion: !obj:pylearn2.termination_criteria.And {
@@ -40,7 +45,7 @@
 #                    channel_name: "valid_y_misclass"
 #                },
                 !obj:pylearn2.termination_criteria.EpochCounter {
-                    max_epochs: 100
+                    max_epochs: 1000
                 }
             ]
         }
