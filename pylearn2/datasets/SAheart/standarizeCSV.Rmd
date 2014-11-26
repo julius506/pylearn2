@@ -1,0 +1,46 @@
+Standarize and randomize order of samples in a .csv dataset with target on the first column
+========================================================
+
+For the moment only real values are allowed
+
+```{r load_dataset}
+#Se cargan los datos
+fileName = "SAheartS"
+fileName.csv = paste(fileName,".csv", sep="")
+setwd('~/Documents/pylearn2/datasets/SAheart')
+DATOS<-read.csv( paste(fileName.csv) ,header=T,dec=".",sep=",")
+
+```
+
+
+```{r scaling_data}
+DATOS[,-1] <- scale(DATOS[,-1])
+```
+
+
+```{r add_one_hot_column}
+DATOS <- cbind(abs(DATOS[,1] -1), DATOS )
+
+```
+
+
+```{r randomizing_data_order}
+newDATOS <- DATOS
+positions <- sample(1:dim(DATOS)[1])
+
+j=1
+for (i in positions){
+  newDATOS[j,] <- DATOS[i,]
+  j <- j+1
+}
+```
+
+
+```{r saving_data}
+
+newFileName = paste(fileName, "extra", ".csv", sep="")
+                
+write.table(newDATOS, file = newFileName, sep = ",", eol = "\r", na = "NA", dec = ".", row.names = FALSE, col.names = TRUE)
+```
+
+
