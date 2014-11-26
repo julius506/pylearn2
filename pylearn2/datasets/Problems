@@ -23,19 +23,10 @@ higgs.yaml / SAheartSoftmax.yaml
 
 ValueError: VectorSpace(dim=1, dtype=float64) with total dimension 1 can't format a batch into VectorSpace(dim=2, dtype=float64)because its total dimension is 2
 
-This happens when I set the softmax number of classes to 2. If I leave it 1 it runs but the cost function is (obviously) zero always.
+Maybe the problem is with transforming the data?
 
 
 
 
-
-
-
-
-
-arcus-1
-Problems pushing/pulling to/from github
-How do I copy something from server to my machine? (ademas de por medio de github)
-how can I visualize plots from plot_monitor.py in my machine if the file is in the server?
-
-
+concrete.yaml
+Problems with implementing weight decay
