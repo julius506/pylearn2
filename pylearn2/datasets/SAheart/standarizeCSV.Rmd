@@ -5,21 +5,31 @@ For the moment only real values are allowed
 
 ```{r load_dataset}
 #Se cargan los datos
-fileName = "SAheartS"
+fileName = "mnist_test"
 fileName.csv = paste(fileName,".csv", sep="")
-setwd('~/Documents/pylearn2/datasets/SAheart')
-DATOS<-read.csv( paste(fileName.csv) ,header=T,dec=".",sep=",")
-
+setwd('~/Documents/pylearn2/datasets/MNIST')
+DATOS<-read.csv( paste(fileName.csv) ,header=F,dec=".",sep=",")
+str(DATOS)
+#check there are no NaNs in the data
+all(!(is.na(DATOS)))
 ```
 
 
 ```{r scaling_data}
 DATOS[,-1] <- scale(DATOS[,-1])
+#replace nan with zero after scaling
+DATOS <- rapply( DATOS, f=function(x) ifelse(is.nan(x),0,x), how="replace" )
+str(DATOS)
 ```
 
 
 ```{r add_one_hot_column}
 DATOS <- cbind(abs(DATOS[,1] -1), DATOS )
+
+
+```
+
+```{r add_classification_columns}
 
 ```
 
