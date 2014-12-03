@@ -1,0 +1,68 @@
+Standarize and randomize order of samples in a .csv dataset with target on the first column
+========================================================
+
+For the moment only real values are allowed
+
+```{r load_dataset}
+#Se cargan los datos
+fileName = "mnist_train"
+fileName.csv = paste(fileName,".csv", sep="")
+setwd('~/Documents/pylearn2/datasets/MNIST')
+DATOS<-read.csv( paste(fileName.csv) ,header=F,dec=".",sep=",")
+#str(DATOS)
+#check there are no NaNs in the data
+#all(!(is.na(DATOS)))
+```
+
+
+```{r scaling_data}
+DATOS[,-1] <- scale(DATOS[,-1])
+#replace nan with zero after scaling
+DATOS <- rapply( DATOS, f=function(x) ifelse(is.nan(x),0,x), how="replace" )
+#str(DATOS)
+DATOS <- as.data.frame(DATOS)
+```
+
+
+```{r add_one_hot_column}
+#DATOS <- cbind(abs(DATOS[,1] -1), DATOS )
+
+
+```
+
+```{r add_classification_columns}
+
+A <- as.data.frame(matrix(NaN, dim(DATOS)[1], 10))
+
+for (i in 1:10){
+  A[,i] <- DATOS[,1]==(i-1)
+}
+A <- rapply( A, f=function(x) ifelse(x,1,0), how="replace" )
+A <- as.data.frame(A)
+newDATOS <- cbind(A,DATOS[,-1])
+
+```
+
+
+```{r randomizing_data_order}
+#newDATOS <- DATOS
+#positions <- sample(1:dim(DATOS)[1])
+
+#j=1
+#for (i in positions){
+#  newDATOS[j,] <- DATOS[i,]
+#  j <- j+1
+#}
+```
+
+
+```{r saving_data}
+
+newFileName = paste(fileName, "2", ".csv", sep="")
+                
+write.table(newDATOS, file = newFileName, sep = ",", eol = "\r", na = "NA", dec = ".", row.names = FALSE, col.names = FALSE)
+
+head(newDATOS)
+```
+
+
